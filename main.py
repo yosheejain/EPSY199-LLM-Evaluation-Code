@@ -40,7 +40,12 @@ def load_json(path: Path) -> Any:
 
 
 def timestamp() -> str:
-    return dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return (
+        dt.datetime.now(dt.timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
 
 
 def build_student_prompt(example: Dict[str, Any]) -> str:
@@ -51,8 +56,7 @@ def build_student_prompt(example: Dict[str, Any]) -> str:
         f"{example.get('code', '').strip()}\n"
         "```\n\n"
         f"Question: {example.get('question', '').strip()}\n\n"
-        "Act as a tutor: diagnose the misconception, ask concise questions, "
-        "and guide them toward the fix. Be clear and encouraging."
+        "Act as a tutor."
     )
 
 
@@ -233,6 +237,13 @@ def main() -> None:
         help="Limit number of misconceptions to run (for quick smoke tests).",
     )
     parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help="Number of times to repeat each misconception per tutor model "
+        "(e.g., 100 for a 500-run dataset with 5 prompts).",
+    )
+    parser.add_argument(
         "--output",
         default="data/runs.jsonl",
         type=Path,
@@ -256,12 +267,12 @@ def main() -> None:
     )
     parser.add_argument(
         "--claude-model",
-        default="claude-3-5-sonnet-20240620",
+        default="claude-sonnet-4-5",
         help="Claude model identifier.",
     )
     parser.add_argument(
         "--llama-model",
-        default="llama3.1:8b",
+        default="llama3.1",
         help="Ollama model identifier for Llama.",
     )
     parser.add_argument(
@@ -271,8 +282,13 @@ def main() -> None:
     )
     parser.add_argument(
         "--qwen-model",
-        default="qwen:8b",
+        default="qwen2:7b",
         help="Ollama model identifier for Qwen.",
+    )
+    parser.add_argument(
+        "--ignore-errors",
+        action="store_true",
+        help="Skip a tutor run when a model call fails instead of stopping.",
     )
 
     args = parser.parse_args()
@@ -300,20 +316,32 @@ def main() -> None:
     subset = misconceptions[: args.limit] if args.limit else misconceptions
 
     for example in subset:
-        for tutor_key in tutor_keys:
-            record = run_once(
-                tutor_key=tutor_key,
-                tutor_fn=tutor_fns[tutor_key],
-                example=example,
-                rubric=rubric,
-                args=args,
-                judge_fn=judge_fn,
-            )
-            append_record(args.output, record)
-            print(
-                f"[{record['timestamp']}] saved {example['id']} with {tutor_key}"
-                f" -> {args.output}"
-            )
+        for repeat_idx in range(args.repeat):
+            for tutor_key in tutor_keys:
+                try:
+                    record = run_once(
+                        tutor_key=tutor_key,
+                        tutor_fn=tutor_fns[tutor_key],
+                        example=example,
+                        rubric=rubric,
+                        args=args,
+                        judge_fn=judge_fn,
+                    )
+                except Exception as exc:  # noqa: BLE001 - we want to keep going if asked
+                    if args.ignore_errors:
+                        print(
+                            f"[{timestamp()}] skipped {example['id']} (rep {repeat_idx}) "
+                            f"with {tutor_key} due to error: {exc}"
+                        )
+                        continue
+                    raise
+
+                record["repeat_index"] = repeat_idx
+                append_record(args.output, record)
+                print(
+                    f"[{record['timestamp']}] saved {example['id']} (rep {repeat_idx}) "
+                    f"with {tutor_key} -> {args.output}"
+                )
 
 
 if __name__ == "__main__":

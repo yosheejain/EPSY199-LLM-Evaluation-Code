@@ -10,8 +10,6 @@ from __future__ import annotations
 import os
 from typing import Optional
 
-from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
-
 
 def get_claude_response(
     prompt: str,
@@ -39,6 +37,15 @@ def get_claude_response(
     Raises:
         RuntimeError: If the CLAUDE_API_KEY environment variable is missing.
     """
+    # Local import to avoid hard dependency when Claude is not used.
+    try:
+        from anthropic import Anthropic
+    except ImportError as exc:
+        raise RuntimeError(
+            "anthropic package is not installed. Install it with `pip install anthropic` "
+            "or omit Claude from the --tutor-models/--judge-model list."
+        ) from exc
+
     if load_env_file:
         try:
             from dotenv import load_dotenv

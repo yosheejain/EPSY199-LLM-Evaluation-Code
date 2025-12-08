@@ -17,7 +17,7 @@ def get_chatgpt_response(
     prompt: str,
     *,
     system_prompt: str = "You are a helpful tutor.",
-    model: str = "gpt-4o-mini",
+    model: str = "gpt-5",
     temperature: float = 0.7,
     load_env_file: bool = True,
 ) -> str:
