@@ -1,0 +1,103 @@
+[
+    {
+      "code": "P1",
+      "name": "Retrieval Practice",
+      "definition": "Tutor prompts the learner to recall or predict behavior before revealing the answer.",
+      "scoring": {
+        "2": "Tutor explicitly asks the learner to predict output, recall a concept, or explain what they think is happening before giving the answer.",
+        "1": "Tutor gives a small or implicit prompt for recall (e.g., briefly asking what a line does) but quickly moves to explanation.",
+        "0": "Tutor directly explains or fixes the bug with no attempt to get the learner to recall or predict anything."
+      }
+    },
+    {
+      "code": "P2",
+      "name": "Spacing (Iterative Passes)",
+      "definition": "Tutor encourages short, iterative passes over the code rather than a single one-shot fix.",
+      "scoring": {
+        "2": "Tutor suggests revisiting earlier assumptions or code sections and taking multiple passes over the code in smaller chunks.",
+        "1": "Tutor hints at a step-by-step or iterative approach but does not emphasize revisiting or spacing clearly.",
+        "0": "Tutor presents a full solution or explanation in one continuous block without any notion of returning to parts of the code."
+      }
+    },
+    {
+      "code": "P3",
+      "name": "Interleaving",
+      "definition": "Tutor mixes different debugging strategies or possible causes so the learner can discriminate between them.",
+      "scoring": {
+        "2": "Tutor clearly contrasts multiple possible bug sources or strategies (e.g., logic vs data vs syntax) or switches between reading, tracing, and testing.",
+        "1": "Tutor mentions more than one strategy or possible cause but with little explicit contrast.",
+        "0": "Tutor focuses on a single narrow cause or strategy without offering alternatives."
+      }
+    },
+    {
+      "code": "P4",
+      "name": "Generation Effect",
+      "definition": "Tutor encourages the learner to propose ideas or partial fixes before showing the correct solution.",
+      "scoring": {
+        "2": "Tutor explicitly asks the learner to suggest a hypothesis, rewrite a line, or propose a fix before revealing the solution.",
+        "1": "Tutor builds slightly on the learner's attempt or mentions their idea but does not clearly invite generation first.",
+        "0": "Tutor immediately presents corrected code or the full solution without asking the learner to generate anything."
+      }
+    },
+    {
+      "code": "P5",
+      "name": "Reflection",
+      "definition": "Tutor prompts the learner to explain what changed and why the fix worked.",
+      "scoring": {
+        "2": "Tutor explicitly asks the learner to summarize what was wrong, what changed, and why the new version works or how to generalize the lesson.",
+        "1": "Tutor briefly mentions what changed but does not push for an explanation of why it worked or how to apply it later.",
+        "0": "Tutor gives the fix with no wrap-up, summary, or reflection on why it worked."
+      }
+    },
+    {
+      "code": "P6",
+      "name": "Desirable Difficulties",
+      "definition": "Tutor supports productive struggle instead of giving shortcuts.",
+      "scoring": {
+        "2": "Tutor encourages effortful reasoning such as manual tracing, testing hypotheses, or trying multiple ideas before giving the final solution.",
+        "1": "Tutor gives mild encouragement for effort (e.g., suggests one trace or test) but still moves relatively quickly to the solution.",
+        "0": "Tutor provides a shortcut or complete solution immediately, minimizing or dismissing effortful reasoning."
+      }
+    },
+    {
+      "code": "P7",
+      "name": "Metacognition / Monitoring",
+      "definition": "Tutor helps the learner monitor uncertainty and verify correctness.",
+      "scoring": {
+        "2": "Tutor asks about confidence, suggests explicit checks or verification steps, or prompts the learner to evaluate whether the result matches the goal.",
+        "1": "Tutor includes a single verification cue or mild hint to check the result but does not consistently support monitoring.",
+        "0": "Tutor offers no monitoring or checking; implies that the explanation or fix should simply be accepted."
+      }
+    },
+    {
+      "code": "P8",
+      "name": "Cognitive Load Management",
+      "definition": "Tutor chunks reasoning and reduces irrelevant complexity to avoid overloading the learner.",
+      "scoring": {
+        "2": "Tutor breaks the problem into smaller steps, focuses attention on the most relevant parts of the code, and avoids unnecessary detail.",
+        "1": "Tutor shows some chunking or focus but still includes extra details or minor distractions.",
+        "0": "Tutor gives a long, dense, or off-topic explanation that may overwhelm the learner."
+      }
+    },
+    {
+      "code": "P9",
+      "name": "Learning vs Performance",
+      "definition": "Tutor emphasizes deep understanding and robust correctness rather than just making the current example pass.",
+      "scoring": {
+        "2": "Tutor encourages testing new or edge cases, explains why the fix is correct, or warns against superficial fixes that only make the current input work.",
+        "1": "Tutor mentions correctness but only in a shallow way (e.g., 'now it works') without deeper reasoning or additional tests.",
+        "0": "Tutor focuses solely on removing the immediate error or making the sample run, with no attention to understanding or future transfer."
+      }
+    },
+    {
+      "code": "P10",
+      "name": "Personalization / Interest",
+      "definition": "Tutor connects debugging help to the learner's goals, context, or existing knowledge.",
+      "scoring": {
+        "2": "Tutor adapts the explanation to the learner's stated context or interests, uses their task or an analogy they might know, or clearly tailors language to the persona.",
+        "1": "Tutor shows minor tailoring (e.g., referencing the specific task) but mostly uses generic explanations.",
+        "0": "Tutor provides a completely generic explanation with no sign of adaptation to the learner's context or prior knowledge."
+      }
+    }
+  ]
+  
